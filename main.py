@@ -19,6 +19,7 @@ class Mainwin(QMainWindow,Ui_Form):
         self.setupUi(self)
         self.setWindowTitle("awa")
         self.pushButton.clicked.connect(self.display)
+        self.setFixedSize(self.width(),self.height())
         try:
             with open("data.json",'r') as f:
                 logdata = json.load(f)
@@ -74,6 +75,10 @@ class Mainwin(QMainWindow,Ui_Form):
         # with open("config.json","w",1,"gbk") as f:
         #     f.write(maindata_2)
 
+        if len(SESSDATA) == 0 or len(bili_jct) == 0 or len(DedeUserID) == 0:
+            QMessageBox.warning(self,"警告","有至少一项没有填写！",QMessageBox.Ok)
+            return
+
         startdata = [False,"","",""]
         if self.checkBox.isChecked():
             startdata[0] = True
@@ -85,9 +90,9 @@ class Mainwin(QMainWindow,Ui_Form):
         
         try:
             main_main()
-            QMessageBox.information(self,"消息","发送成功！",QMessageBox.Yes | QMessageBox.No)
+            QMessageBox.information(self,"消息","启动成功！（请从日志查看是否成功发送！）",QMessageBox.Ok)
         except:
-            QMessageBox.warning(self,"警告","发送失败！详细请看日志（lulu.log）",QMessageBox.Yes | QMessageBox.No)
+            QMessageBox.warning(self,"警告","发送失败！详细请看日志（lulu.log）",QMessageBox.Ok)
 
 def init_log(log_file: str, log_console: bool):
     '''初始化日志参数'''
